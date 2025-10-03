@@ -63,22 +63,50 @@ export function ProductEditForm({ product, onSave, onCancel }: ProductEditFormPr
     setIsLoading(true)
 
     try {
-      // Create updated product object
-      const updatedProduct = {
-        ...formData,
-        price: parseInt(formData.price.toString()),
-        year: parseInt(formData.year),
-        lengthCm: formData.lengthCm ? parseFloat(formData.lengthCm) : null,
-        widthCm: formData.widthCm ? parseFloat(formData.widthCm) : null,
-        heightCm: formData.heightCm ? parseFloat(formData.heightCm) : null,
-        weightG: formData.weightG ? parseInt(formData.weightG) : null,
+      // Create FormData for API submission
+      const formDataToSubmit = new FormData()
+      formDataToSubmit.append('title', formData.title)
+      formDataToSubmit.append('slug', formData.slug)
+      formDataToSubmit.append('category', formData.category)
+      formDataToSubmit.append('description', formData.description)
+      formDataToSubmit.append('price', formData.price.toString())
+      formDataToSubmit.append('status', formData.status)
+      formDataToSubmit.append('isFeatured', formData.isFeatured.toString())
+      formDataToSubmit.append('year', formData.year.toString())
+      
+      if (formData.lengthCm) {
+        formDataToSubmit.append('lengthCm', formData.lengthCm.toString())
+      }
+      if (formData.widthCm) {
+        formDataToSubmit.append('widthCm', formData.widthCm.toString())
+      }
+      if (formData.heightCm) {
+        formDataToSubmit.append('heightCm', formData.heightCm.toString())
+      }
+      if (formData.weightG) {
+        formDataToSubmit.append('weightG', formData.weightG.toString())
+      }
+      if (formData.material) {
+        formDataToSubmit.append('material', formData.material)
+      }
+      if (formData.glaze) {
+        formDataToSubmit.append('glaze', formData.glaze)
+      }
+      if (formData.color) {
+        formDataToSubmit.append('color', formData.color)
       }
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // Make API call to update product
+      const response = await fetch(`/api/product/${product.id}`, {
+        method: 'PUT',
+        body: formDataToSubmit,
+      })
 
-      // In a real app, you would update the product in your database here
-      console.log('Updating product:', updatedProduct)
+      if (!response.ok) {
+        throw new Error('Failed to update product')
+      }
+
+      const updatedProduct = await response.json()
       setSuccess('Product updated successfully!')
       
       // Call the onSave callback with updated product

@@ -205,7 +205,7 @@ export default async function HomePage() {
             <div className="relative">
               <div className="aspect-square bg-gray-200 dark:bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
                 <Image
-                  src="/Bri-intro.jpg"
+                  src="/bri-intro.jpg"
                   alt="Brian Introduction"
                   fill
                   className="object-cover rounded-lg"

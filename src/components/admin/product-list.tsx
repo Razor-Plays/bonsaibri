@@ -25,8 +25,8 @@ export function ProductList() {
       
       console.log('Fetching products from API...')
       
-      // Try to fetch from real database first
-      const response = await fetch('/api/products')
+      // Try to fetch from real database first (admin endpoint shows all products)
+      const response = await fetch('/api/admin/products')
       console.log('API response status:', response.status)
       
       if (response.ok) {
@@ -59,13 +59,43 @@ export function ProductList() {
     try {
       console.log('Saving product:', updatedProduct)
       
+      // Create FormData for API submission
+      const formData = new FormData()
+      formData.append('title', updatedProduct.title)
+      formData.append('slug', updatedProduct.slug || '')
+      formData.append('category', updatedProduct.category)
+      formData.append('description', updatedProduct.description || '')
+      formData.append('price', updatedProduct.price.toString())
+      formData.append('status', updatedProduct.status)
+      formData.append('isFeatured', updatedProduct.isFeatured.toString())
+      formData.append('year', updatedProduct.year.toString())
+      
+      if (updatedProduct.lengthCm) {
+        formData.append('lengthCm', updatedProduct.lengthCm.toString())
+      }
+      if (updatedProduct.widthCm) {
+        formData.append('widthCm', updatedProduct.widthCm.toString())
+      }
+      if (updatedProduct.heightCm) {
+        formData.append('heightCm', updatedProduct.heightCm.toString())
+      }
+      if (updatedProduct.weightG) {
+        formData.append('weightG', updatedProduct.weightG.toString())
+      }
+      if (updatedProduct.material) {
+        formData.append('material', updatedProduct.material)
+      }
+      if (updatedProduct.glaze) {
+        formData.append('glaze', updatedProduct.glaze)
+      }
+      if (updatedProduct.color) {
+        formData.append('color', updatedProduct.color)
+      }
+
       // Save to real database via API
-      const response = await fetch(`/api/products/${updatedProduct.id}`, {
+      const response = await fetch(`/api/product/${updatedProduct.id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedProduct),
+        body: formData,
       })
 
       if (!response.ok) {
@@ -98,7 +128,7 @@ export function ProductList() {
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(`/api/products/${id}`, {
+      const response = await fetch(`/api/product/${id}`, {
         method: 'DELETE',
       })
 

@@ -1,108 +1,106 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Calendar, User, Tag, Clock } from 'lucide-react'
 import { BlogPostModal } from '@/components/blog-modal'
 
-// Sample blog post data
-const blogPosts = [
-  {
-    id: '1',
-    title: 'The Art of Choosing the Perfect Bonsai Pot',
-    slug: 'choosing-perfect-bonsai-pot',
-    excerpt: 'Learn how to select the ideal pot for your bonsai tree, balancing the needs of your tree with your personal style and aesthetic preferences.',
-    content: `After years of working with bonsai, I've learned that choosing the right pot is both an art and a science. The pot must serve your tree's needs first and foremost - providing proper drainage, a stable base, and adequate space for root development. But beyond these essentials, there's a beautiful opportunity to express your personal style and create something that speaks to you.
-
-## Tree Needs Come First
-
-When I'm helping someone choose a pot, I always start with the practical requirements. Your tree needs proper drainage holes - I've seen too many beautiful bonsai suffer from root rot because of inadequate drainage. The base must be stable, especially for cascade styles that carry more weight. The depth should accommodate your root system while allowing for future growth.
-
-## Finding Your Style
-
-Once the practical needs are met, this is where the magic happens. I encourage people to trust their instincts and choose what genuinely appeals to them. Some folks love the earthy simplicity of unglazed clay, while others are drawn to the subtle elegance of a celadon glaze. There's no wrong answer - if it makes you happy every time you look at it, that's the right choice.
-
-## My Personal Approach
-
-I tend to favor pots that let the tree be the star. My favorite piece is actually a simple, unglazed rectangular pot that I made early in my career. It's not flashy, but it perfectly complements a pine I've been training for years. Sometimes the most beautiful pairing is the most understated one.
-
-Remember: the pot is the frame, the tree is the picture, but you're the artist making the final decision. Choose what brings you joy!`,
-    author: 'Brian',
-    date: '2024-01-15',
-    category: 'Bonsai Care',
-    tags: ['bonsai', 'pots', 'styling'],
-    image: '/blog-bonsai-pot.jpg',
-    readTime: '3 min read'
-  },
-  {
-    id: '2',
-    title: 'Creating Handmade Christmas Ornaments: A Potter\'s Guide',
-    slug: 'handmade-christmas-ornaments-guide',
-    excerpt: 'Discover the joy of creating ceramic Christmas ornaments that become treasured family heirlooms, carrying love and tradition through generations.',
-    content: `There's something magical about unpacking handmade ornaments each December. Each piece carries memories of Christmases past - the year Grandma helped paint the angels, the snowflake we made when the kids were little, the special ornament commemorating a new family member. These aren't just decorations; they're vessels of love and tradition.
-
-## The Joy of Handmade Traditions
-
-I started making Christmas ornaments when my children were young. What began as a fun December activity has become one of my favorite traditions. Each year, we create new pieces together, and now my grandchildren are getting involved too. There's something special about knowing these little pieces of art will be part of family celebrations long after I'm gone.
-
-## Working with a Medium I Love
-
-Ceramics is perfect for ornaments because it captures detail beautifully and lasts forever. I use a fine white clay body that takes glazes wonderfully, allowing for both subtle earth tones and vibrant holiday colors. The weight is perfect - substantial enough to feel quality, but light enough for any tree branch.
-
-## Creating Family Heirlooms
-
-When designing ornaments, I think about the families who will treasure them. Each piece should feel timeless - something that won't look dated in twenty years. I often incorporate elements that can be personalized: space for names, dates, or special messages. One of my favorite commissions was a set of ornaments for a couple's first Christmas together, with their wedding date subtly incorporated into the design.
-
-The best ornaments tell a story. Maybe it's the year you got married, welcomed a new baby, or weathered a difficult time together. These small pieces of ceramic carry big meaning, and that's what makes them so special.`,
-    author: 'Brian',
-    date: '2024-01-08',
-    category: 'Techniques',
-    tags: ['christmas', 'ornaments', 'handmade'],
-    image: '/blog-christmas-ornaments.jpg',
-    readTime: '3 min read'
-  },
-  {
-    id: '3',
-    title: 'The Philosophy of Slow Living Through Pottery',
-    slug: 'slow-living-through-pottery',
-    excerpt: 'Discover how the meditative practice of pottery fosters mindfulness, creativity, and self-expression while teaching us to embrace both success and failure.',
-    content: `In our fast-paced world, pottery offers a rare sanctuary where time seems to slow down. When I'm at the wheel, there's no room for worrying about tomorrow or dwelling on yesterday. It's just me, the clay, and the present moment. This mindfulness is what drew me to pottery initially, and it's what keeps me coming back to the studio day after day.
-
-## Finding Presence in Clay
-
-There's something deeply meditative about wedging clay, centering it on the wheel, and feeling it transform beneath your hands. Each step demands your full attention - miss the right moisture content, and your piece cracks. Rush the drying process, and you'll lose weeks of work. Pottery teaches patience in a way few other activities can.
-
-## Creativity and Self-Expression
-
-What I love most about pottery is how it allows for endless creativity. No two pieces are ever exactly alike, even when you're trying to replicate something. Each creation carries your energy, your mood, your intention in that moment. Some of my favorite pieces are the ones where I let go of trying to make something "perfect" and just allowed myself to play.
-
-## Embracing Failure and Finding Beauty
-
-One of my most beloved glazes came from a complete mistake. I was trying to create a simple earth tone and misread the recipe, adding twice the amount of iron oxide. The result was this gorgeous, complex surface that looks like aged bronze with hints of purple. I almost threw the test piece away! Now it's one of my most requested finishes.
-
-Pottery has taught me that failure isn't the opposite of success - it's part of the process. Some of my most interesting pieces came from "mistakes" that pushed me to explore new techniques and aesthetics. The kiln has a way of surprising you, and I've learned to embrace those surprises rather than fight them.
-
-The slow living movement isn't about doing everything slowly - it's about doing everything with intention. Pottery embodies this philosophy perfectly. Each piece requires presence, patience, and acceptance of what emerges. In a world that demands instant results, there's profound satisfaction in creating something that simply cannot be rushed.`,
-    author: 'Brian',
-    date: '2024-01-01',
-    category: 'Philosophy',
-    tags: ['slow living', 'mindfulness', 'philosophy'],
-    image: '/blog-slow-living.jpg',
-    readTime: '3 min read'
-  }
-]
+interface BlogPost {
+  id: string
+  title: string
+  slug: string
+  excerpt: string
+  content: string
+  author: string
+  publishedAt: string | null
+  category: string
+  tags?: string
+  readTime: string
+  image?: string
+  createdAt: string
+  updatedAt: string
+}
 
 export default function JournalPage() {
-  const [selectedPost, setSelectedPost] = useState<typeof blogPosts[0] | null>(null)
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  const handlePostClick = (post: typeof blogPosts[0]) => {
+  useEffect(() => {
+    fetchBlogPosts()
+  }, [])
+
+  const fetchBlogPosts = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      
+      const res = await fetch('/api/blog')
+      if (!res.ok) throw new Error('Failed to fetch blog posts')
+      
+      const data = await res.json()
+      console.log('Fetched blog posts for journal:', data)
+      setBlogPosts(data)
+    } catch (error) {
+      console.error('Error fetching blog posts:', error)
+      setError('Failed to fetch blog posts')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handlePostClick = (post: BlogPost) => {
     setSelectedPost(post)
   }
 
   const handleCloseModal = () => {
     setSelectedPost(null)
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-white mx-auto"></div>
+            <p className="mt-4 text-gray-600 dark:text-gray-300">Loading blog posts...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center">
+            <p className="text-red-600 dark:text-red-400">{error}</p>
+            <Button onClick={fetchBlogPosts} className="mt-4">
+              Try Again
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (blogPosts.length === 0) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-gray-950">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center">
+            <p className="text-gray-600 dark:text-gray-300">No blog posts found.</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+              Check back soon for new content!
+            </p>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -153,8 +151,8 @@ export default function JournalPage() {
                     <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
                       <div className="flex items-center gap-1">
                         <Calendar className="h-4 w-4" />
-                        <time dateTime={post.date}>
-                          {new Date(post.date).toLocaleDateString('en-US', { 
+                        <time dateTime={post.publishedAt || post.createdAt}>
+                          {new Date(post.publishedAt || post.createdAt).toLocaleDateString('en-US', { 
                             month: 'long', 
                             day: 'numeric', 
                             year: 'numeric' 
@@ -167,7 +165,7 @@ export default function JournalPage() {
                       </div>
                       <div className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
-                        <span>{post.readTime}</span>
+                        <span>{post.readTime || '3 min read'}</span>
                       </div>
                     </div>
                     
@@ -176,13 +174,13 @@ export default function JournalPage() {
                     </h2>
                     
                     <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
-                      {post.excerpt}
+                      {post.excerpt || post.content.substring(0, 150) + '...'}
                     </p>
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Tag className="h-4 w-4 text-gray-400" />
-                        <span className="text-sm text-gray-500 dark:text-gray-400">{post.category}</span>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">{post.category || 'General'}</span>
                       </div>
                       
                       <Button variant="ghost" size="sm">

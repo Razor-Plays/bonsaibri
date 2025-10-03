@@ -45,29 +45,28 @@ export function BlogUploadForm() {
     setIsLoading(true)
 
     try {
-      // Create FormData for file upload
+      // Create FormData for API submission
       const formDataToSend = new FormData()
       
-      // Add image if selected
-      if (image) {
-        formDataToSend.append('image', image)
-      }
-
       // Add form data
-      Object.entries(formData).forEach(([key, value]) => {
-        formDataToSend.append(key, value)
+      formDataToSend.append('title', formData.title)
+      formDataToSend.append('slug', formData.slug || formData.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''))
+      formDataToSend.append('content', formData.content)
+      formDataToSend.append('author', 'Brian')
+      formDataToSend.append('published', 'true')
+
+      // Make API call to create blog post
+      const response = await fetch('/api/blog', {
+        method: 'POST',
+        body: formDataToSend,
       })
 
-      // Add author (always Brian)
-      formDataToSend.append('author', 'Brian')
-      formDataToSend.append('date', new Date().toISOString())
+      if (!response.ok) {
+        throw new Error('Failed to create blog post')
+      }
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
-
-      // In a real app, you would upload to your API here
-      // For now, we'll simulate success
-      setSuccess('Blog post uploaded successfully!')
+      const createdPost = await response.json()
+      setSuccess('Blog post created successfully!')
       
       // Reset form
       setFormData({
@@ -82,7 +81,8 @@ export function BlogUploadForm() {
       setImage(null)
       
     } catch (error) {
-      setError('Failed to upload blog post. Please try again.')
+      console.error('Error creating blog post:', error)
+      setError('Failed to create blog post. Please try again.')
     } finally {
       setIsLoading(false)
     }

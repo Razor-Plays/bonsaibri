@@ -48,6 +48,18 @@ model Image {
   @@index([productId])
 }
 
+model BlogPost {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  content     String   // markdown or rich text
+  author      String?
+  published   Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 enum Category {
   BONSAI_POTS
   CHRISTMAS_ORNAMENTS
