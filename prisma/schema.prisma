@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  category     Category
+  description  String   // markdown
+  lengthCm     Float?
+  widthCm      Float?
+  heightCm     Float?
+  weightG      Int?
+  material     String?  // clay/body
+  glaze        String?
+  color        String?
+  year         Int?
+  price        Int?     // optional, cents
+  status       Status   @default(AVAILABLE) // AVAILABLE | SOLD | CUSTOM
+  isFeatured   Boolean  @default(false)
+  externalUrl  String?  // Facebook Marketplace link
+  images       Image[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([category])
+  @@index([status])
+  @@index([isFeatured])
+}
+
+model Image {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String?
+  order     Int       @default(0)
+  productId String?
+  product   Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+}
+
+enum Category {
+  BONSAI_POTS
+  CHRISTMAS_ORNAMENTS
+  SMOKING_ACCESSORIES
+}
+
+enum Status {
+  AVAILABLE
+  SOLD
+  CUSTOM
+}
