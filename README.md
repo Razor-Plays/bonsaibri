@@ -1,131 +1,274 @@
-# Bonsai Bri - Handcrafted Pottery Website
+# BonsaiBri - Handcrafted Pottery Website
 
-A modern, responsive website for Bonsai Bri - handcrafted pottery for bonsai, holidays & the slow life.
+A beautiful, handcrafted pottery website built with Next.js, featuring a complete admin dashboard, blog system, and e-commerce functionality.
 
-## 🚀 **QUICK START - WEBSITE ACCESS**
+## 🌟 Features
 
-### **View the Website:**
+- **Complete Product Catalog** - Browse handcrafted pottery items
+- **Admin Dashboard** - Full CRUD operations for products and blog posts
+- **Blog System** - Thoughts and musings on pottery, bonsai, and slow living
+- **Responsive Design** - Works beautifully on all devices
+- **Database Integration** - SQLite with Prisma ORM
+- **Modern Tech Stack** - Next.js, React, TypeScript, Tailwind CSS
+
+## 🚀 GitHub Pages Setup Guide
+
+Since this is a Next.js application with a build process, database, and API routes, it requires special configuration for GitHub Pages. Here's how to properly deploy it:
+
+### Option 1: GitHub Actions Deployment (Recommended)
+
+1. **Create GitHub Actions Workflow**
+   Create `.github/workflows/deploy.yml` in your repository:
+
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+      working-directory: ./bonsai
+    
+    - name: Build Next.js
+      run: npm run build
+      working-directory: ./bonsai
+      env:
+        DATABASE_URL: "file:./dev.db"
+    
+    - name: Export static files
+      run: npm run export
+      working-directory: ./bonsai
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./bonsai/out
+```
+
+2. **Configure Next.js for Static Export**
+   Add to your `next.config.js`:
+
+```javascript
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',
+  basePath: process.env.NODE_ENV === 'production' ? '/your-repo-name' : '',
+  images: {
+    unoptimized: true
+  }
+}
+
+module.exports = nextConfig
+```
+
+3. **Add Export Script**
+   Add to your `package.json`:
+
+```json
+"scripts": {
+  "build": "next build",
+  "export": "next export",
+  "deploy": "next build && next export"
+}
+```
+
+4. **Enable GitHub Pages**
+   - Go to your repository Settings → Pages
+   - Set Source to "GitHub Actions"
+   - Save the changes
+
+### Option 2: Manual Static Export
+
+1. **Build and Export Locally**
+   ```bash
+   cd bonsai
+   npm install
+   npm run build
+   npm run export
+   ```
+
+2. **Create GitHub Pages Branch**
+   ```bash
+   git checkout --orphan gh-pages
+   git rm -rf .
+   cp -r out/* .
+   git add .
+   git commit -m "Deploy to GitHub Pages"
+   git push origin gh-pages
+   ```
+
+3. **Configure GitHub Pages**
+   - Go to Settings → Pages
+   - Set source to "Deploy from a branch"
+   - Select "gh-pages" branch
+   - Save changes
+
+## 📁 Project Structure
+
+```
+bonsai/
+├── src/
+│   ├── app/              # Next.js App Router
+│   ├── components/       # React components
+│   ├── lib/             # Utilities and database
+│   └── ...
+├── prisma/              # Database schema and migrations
+├── public/              # Static assets
+├── package.json
+└── README.md
+```
+
+## 🛠️ Local Development Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/your-repo-name.git
+   cd your-repo-name
+   ```
+
+2. **Install dependencies**
+   ```bash
+   cd bonsai
+   npm install
+   ```
+
+3. **Set up environment variables**
+   Create a `.env` file in the bonsai directory:
+   ```
+   DATABASE_URL="file:./dev.db"
+   ```
+
+4. **Set up the database**
+   ```bash
+   npx prisma generate
+   npx prisma migrate dev
+   npm run prisma:seed
+   ```
+
+5. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+6. **Access the website**
+   - Main site: http://localhost:3000
+   - Admin dashboard: http://localhost:3000/admin
+
+## 🗄️ Database Management
+
+### Seed the database with sample data:
 ```bash
-cd bonsai
-npm run dev
-```
-- **Local**: http://localhost:3001
-- **Your website is now running!**
-
-## 🎯 **BACKEND ACCESS - ADDING CONTENT**
-
-### **🚨 ADMIN ACCESS - LOGIN CREDENTIALS:**
-**Admin Login**: `http://localhost:3001/admin`
-- **Email**: `admin@bonsaibri.com`
-- **Password**: `admin123`
-
-### **Admin Dashboard Features:**
-✅ **Complete admin system** with login authentication
-✅ **Product management** with image upload
-✅ **Blog post creation** with image upload
-✅ **Content listing** with edit/delete capabilities
-✅ **Professional admin interface** matching website design
-
-## 🚀 **ADMIN DASHBOARD ACCESS**
-
-### **Step 1: Access Admin Login**
-Navigate to: `http://localhost:3001/admin`
-- Use email: `admin@bonsaibri.com`
-- Use password: `admin123`
-
-### **Step 2: Content Management**
-Once logged in, you'll see two main sections:
-
-#### **📦 Products Management:**
-- **Add New Product**: Upload photos, set title, description, price, dimensions
-- **Manage Products**: View, edit, or delete existing products
-- **Categories**: Bonsai Pots, Christmas Ornaments, Smoking Accessories
-
-#### **📝 Blog Management (Thoughts):**
-- **Add New Post**: Write about pottery, bonsai, slow living
-- **Manage Posts**: View, edit, or delete existing blog posts
-- **Always authored by "Brian"** as requested
-
-### **Step 3: Upload Content**
-- **Images**: Drag & drop or click to select multiple images
-- **Forms**: Fill in all required fields with validation
-- **Publish**: Click submit to add content to your website
-
-## 📁 **FILE STRUCTURE FOR EASY UPDATES**
-
-### **Images to Add/Update:**
-```
-bonsai/public/
-├── header-logo.png          ✅ Header logo (navbar & footer)
-├── banner-logo.png          ✅ Homepage hero banner logo
-├── banner.jpg               ✅ Homepage lifestyle banner
-├── bri-at-work.jpg          ✅ About page Brian at work
-├── bri-intro.jpg            ✅ Homepage About Brian introduction
-├── category-bonsai.jpg      ✅ Category: Bonsai Pots
-├── category-christmas.jpg   ✅ Category: Christmas Ornaments
-├── category-smoking.jpg     ✅ Category: Smoking Accessories
-├── bonsai-pot-1.jpg         ✅ Product: Bonsai pot
-├── bonsai-pot-2.jpg         ✅ Product: Bonsai pot
-├── ornament-1.jpg           ✅ Product: Christmas ornament
-├── ornament-2.jpg           ✅ Product: Christmas ornament
-├── pipe-1.jpg               ✅ Product: Smoking pipe
-├── ashtray-1.jpg            ✅ Product: Ashtray
-├── blog-bonsai-pot.jpg      ✅ Blog: Bonsai pot article
-├── blog-christmas-ornaments.jpg ✅ Blog: Christmas ornaments article
-└── blog-slow-living.jpg     ✅ Blog: Slow living article
+npm run prisma:seed
 ```
 
-### **Content to Update:**
-- **About Page**: `bonsai/src/app/about/page.tsx` - Brian's story and process
-- **Blog Posts**: `bonsai/src/app/journal/page.tsx` - Brian's thoughts and insights
-- **Product Descriptions**: `bonsai/src/app/products/page.tsx` - Product details and pricing
-- **Contact Info**: Update email/phone in footer and contact page
+### Reset database:
+```bash
+npx prisma migrate reset
+npm run prisma:seed
+```
 
-## 🔧 **TECHNICAL DETAILS**
+### View database in Prisma Studio:
+```bash
+npx prisma studio
+```
 
-### **Framework & Stack:**
-- **Next.js 15** with App Router
-- **React 19** with TypeScript
-- **Tailwind CSS** for styling
-- **Prisma** for database management
-- **SQLite database** for local development
+## 🔧 Configuration
 
-### **Key Features:**
-- ✅ **Dark Mode** with theme switching
-- ✅ **Responsive Design** (mobile, tablet, desktop)
-- ✅ **Product Modal System** - Click products for full details
-- ✅ **Blog Modal System** - Click blog posts for full content
-- ✅ **SEO Optimized** with proper meta tags
-- ✅ **Fast Performance** with Next.js and Turbopack
+### Environment Variables
+Create a `.env` file in the bonsai directory:
+```
+DATABASE_URL="file:./dev.db"
+```
 
-### **Navigation Updated:**
-- ✅ **Home** - Hero section with lifestyle imagery
-- ✅ **About** - Brian's personal story and process
-- ✅ **Products** - Complete catalog with filtering
-- ✅ **Thoughts** - Personal blog (formerly "Journal")
-- ✅ **Contact** - Professional contact form
+### Next.js Configuration
+The app is configured for both development and GitHub Pages deployment. Key settings:
+- Static export enabled for GitHub Pages compatibility
+- Database file path configured for portability
+- Image optimization disabled for static deployment
 
-## 🎨 **CUSTOMIZATION GUIDE**
+## 🚀 Deployment Options
 
-### **Colors & Branding:**
-- **Primary Colors**: Black, white, gray tones
-- **Accent Colors**: Subtle earth tones
-- **Typography**: Inter (sans-serif) + Noto Serif (accent)
-- **Style**: Japanese minimalist aesthetic
+### GitHub Pages (Static)
+- Follow the GitHub Actions setup above
+- Automatically deploys on push to main branch
+- Database is included in the static build
 
-### **Personal Touches Added:**
-- ✅ **"Thoughts"** instead of "Journal" - more personal
-- ✅ **"Brian's Creations"** instead of "Our Products"
-- ✅ **"Contact Brian"** instead of generic contact
-- ✅ **Personal blog content** with Brian's insights
-- ✅ **Authentic voice** throughout all copy
+### Vercel (Recommended for Full Features)
+- Connect your GitHub repository to Vercel
+- Automatic deployments on push
+- Full database and API functionality
 
-## 📞 **NEED HELP?**
-If you need assistance adding content or have questions about the website:
-1. **Check this README** first
-2. **Review the file structure** above
-3. **Contact support** if needed
+### Netlify
+- Drag and drop the `out` folder after building
+- Or connect GitHub for automatic deployments
 
-**Your Bonsai Bri website is ready for Brian's beautiful pottery and personal stories!** 🎨✨
+## 📊 Database Schema
 
-Brian can now easily manage his pottery business online with this beautiful, professional website!
+The application uses SQLite with Prisma ORM. Key models:
+- **Product** - Product catalog with images and details
+- **BlogPost** - Blog posts with content and metadata
+- **Image** - Product images with ordering
+
+## 🎨 Customization
+
+### Styling
+- Uses Tailwind CSS for styling
+- Dark mode support included
+- Responsive design throughout
+
+### Content
+- Update mock data in `src/lib/mock-data.ts`
+- Modify seed scripts in `prisma/` directory
+- Customize components in `src/components/`
+
+### Images
+- Place product images in `public/` folder
+- Blog post images should also go in `public/`
+- Follow the existing naming convention
+
+## 🐛 Troubleshooting
+
+### GitHub Pages Not Loading
+1. Ensure GitHub Actions workflow is properly configured
+2. Check that the `out` folder exists after build
+3. Verify repository settings have GitHub Actions enabled
+4. Make sure the base path in `next.config.js` matches your repository name
+
+### Database Issues
+1. Check that `DATABASE_URL` is properly set
+2. Ensure Prisma client is generated: `npx prisma generate`
+3. Verify database file exists after seeding
+
+### Build Errors
+1. Check Node.js version (18+ recommended)
+2. Ensure all dependencies are installed
+3. Verify environment variables are set
+
+## 📞 Support
+
+For issues or questions:
+1. Check the troubleshooting section above
+2. Review GitHub Actions logs for deployment issues
+3. Ensure all prerequisites are met
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
