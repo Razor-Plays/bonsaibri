@@ -1,4 +1,4 @@
-import { PrismaClient, Category, Status } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -8,7 +8,7 @@ async function main() {
     {
       title: 'Handcrafted Bonsai Pot - Round',
       slug: 'handcrafted-bonsai-pot-round',
-      category: Category.BONSAI_POTS,
+      category: 'BONSAI_POTS',
       description: `A beautifully handcrafted round bonsai pot, perfect for showcasing your miniature trees. Made from high-quality clay with a natural finish that complements any bonsai specimen.
 
 **Features:**
@@ -25,7 +25,7 @@ async function main() {
       color: 'Natural clay',
       year: 2024,
       price: 4500, // $45.00 in cents
-      status: Status.AVAILABLE,
+      status: 'AVAILABLE',
       isFeatured: true,
       images: [
         { url: '/bonsai-pot-1.jpg', alt: 'Handcrafted round bonsai pot', order: 0 },
@@ -35,7 +35,7 @@ async function main() {
     {
       title: 'Rectangular Bonsai Pot - Glazed',
       slug: 'rectangular-bonsai-pot-glazed',
-      category: Category.BONSAI_POTS,
+      category: 'BONSAI_POTS',
       description: `Elegant rectangular bonsai pot with a beautiful celadon glaze. Perfect for formal upright bonsai styles. The clean lines and subtle glaze make this a timeless piece.
 
 **Features:**
@@ -52,7 +52,7 @@ async function main() {
       color: 'Light green',
       year: 2024,
       price: 6500, // $65.00 in cents
-      status: Status.AVAILABLE,
+      status: 'AVAILABLE',
       isFeatured: true,
       images: [
         { url: '/bonsai-pot-2.jpg', alt: 'Rectangular bonsai pot with celadon glaze', order: 0 }
@@ -61,7 +61,7 @@ async function main() {
     {
       title: 'Oval Bonsai Pot - Traditional',
       slug: 'oval-bonsai-pot-traditional',
-      category: Category.BONSAI_POTS,
+      category: 'BONSAI_POTS',
       description: `Traditional oval bonsai pot with feet, featuring a rich brown glaze. This classic design has been used for centuries in bonsai cultivation.
 
 **Features:**
@@ -78,7 +78,7 @@ async function main() {
       color: 'Brown',
       year: 2023,
       price: 5500, // $55.00 in cents
-      status: Status.SOLD,
+      status: 'SOLD',
       isFeatured: false,
       images: [
         { url: '/bonsai-pot-1.jpg', alt: 'Traditional oval bonsai pot', order: 0 }
@@ -87,7 +87,7 @@ async function main() {
     {
       title: 'Ceramic Christmas Ornament - Snowflake',
       slug: 'ceramic-christmas-ornament-snowflake',
-      category: Category.CHRISTMAS_ORNAMENTS,
+      category: 'CHRISTMAS_ORNAMENTS',
       description: `Hand-painted ceramic Christmas ornament featuring a delicate snowflake design. Each piece is unique and makes a perfect gift or addition to your holiday decor.
 
 **Features:**
@@ -104,7 +104,7 @@ async function main() {
       color: 'White and blue',
       year: 2024,
       price: 1500, // $15.00 in cents
-      status: Status.AVAILABLE,
+      status: 'AVAILABLE',
       isFeatured: true,
       images: [
         { url: '/ornament-1.jpg', alt: 'Ceramic snowflake Christmas ornament', order: 0 }
@@ -113,7 +113,7 @@ async function main() {
     {
       title: 'Christmas Tree Ornament - Handcrafted',
       slug: 'christmas-tree-ornament-handcrafted',
-      category: Category.CHRISTMAS_ORNAMENTS,
+      category: 'CHRISTMAS_ORNAMENTS',
       description: `Charming handcrafted Christmas tree ornament with a rustic finish. Each piece is individually shaped and painted, making every ornament unique.
 
 **Features:**
@@ -130,7 +130,7 @@ async function main() {
       color: 'Green and brown',
       year: 2024,
       price: 1200, // $12.00 in cents
-      status: Status.AVAILABLE,
+      status: 'AVAILABLE',
       isFeatured: false,
       images: [
         { url: '/ornament-2.jpg', alt: 'Handcrafted Christmas tree ornament', order: 0 }
@@ -139,7 +139,7 @@ async function main() {
     {
       title: 'Angel Ornament - Ceramic',
       slug: 'angel-ornament-ceramic',
-      category: Category.CHRISTMAS_ORNAMENTS,
+      category: 'CHRISTMAS_ORNAMENTS',
       description: `Beautiful ceramic angel ornament with intricate details. This elegant piece adds a touch of serenity to your Christmas tree.
 
 **Features:**
@@ -156,7 +156,7 @@ async function main() {
       color: 'White with gold accents',
       year: 2023,
       price: 1800, // $18.00 in cents
-      status: Status.CUSTOM,
+      status: 'CUSTOM',
       isFeatured: false,
       images: [
         { url: '/ornament-1.jpg', alt: 'Ceramic angel Christmas ornament', order: 0 }
@@ -165,7 +165,7 @@ async function main() {
     {
       title: 'Ceramic Smoking Pipe - Artisan',
       slug: 'ceramic-smoking-pipe-artisan',
-      category: Category.SMOKING_ACCESSORIES,
+      category: 'SMOKING_ACCESSORIES',
       description: `Handcrafted ceramic smoking pipe with a unique glaze pattern. Each pipe is individually crafted and fired to perfection.
 
 **Features:**
@@ -182,7 +182,7 @@ async function main() {
       color: 'Blue and brown',
       year: 2024,
       price: 3500, // $35.00 in cents
-      status: Status.AVAILABLE,
+      status: 'AVAILABLE',
       isFeatured: true,
       images: [
         { url: '/pipe-1.jpg', alt: 'Artisan ceramic smoking pipe', order: 0 }
@@ -191,7 +191,7 @@ async function main() {
     {
       title: 'Ceramic Water Pipe - Small',
       slug: 'ceramic-water-pipe-small',
-      category: Category.SMOKING_ACCESSORIES,
+      category: 'SMOKING_ACCESSORIES',
       description: `Compact ceramic water pipe perfect for personal use. Features a simple design with effective water filtration.
 
 **Features:**
@@ -208,7 +208,7 @@ async function main() {
       color: 'White',
       year: 2024,
       price: 8500, // $85.00 in cents
-      status: Status.AVAILABLE,
+      status: 'AVAILABLE',
       isFeatured: false,
       images: [
         { url: '/ashtray-1.jpg', alt: 'Small ceramic water pipe', order: 0 }
@@ -217,7 +217,7 @@ async function main() {
     {
       title: 'Ceramic Ashtray - Leaf Design',
       slug: 'ceramic-ashtray-leaf-design',
-      category: Category.SMOKING_ACCESSORIES,
+      category: 'SMOKING_ACCESSORIES',
       description: `Decorative ceramic ashtray featuring a leaf design. Functional and beautiful, perfect for outdoor or indoor use.
 
 **Features:**
@@ -234,7 +234,7 @@ async function main() {
       color: 'Green and brown',
       year: 2024,
       price: 2500, // $25.00 in cents
-      status: Status.AVAILABLE,
+      status: 'AVAILABLE',
       isFeatured: false,
       images: [
         { url: '/ashtray-1.jpg', alt: 'Ceramic leaf design ashtray', order: 0 }
@@ -247,7 +247,7 @@ async function main() {
     const { images, ...productInfo } = productData
     
     const product = await prisma.product.create({
-      data: productInfo
+      data: productInfo as any
     })
 
     // Create images for the product

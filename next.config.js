@@ -5,14 +5,12 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
-  // Disable server-side features for static export
-  experimental: {
-    appDir: true,
-  },
   // Ensure static export works properly
   trailingSlash: true,
   // Handle API routes in static export
   distDir: 'out',
+  // Set outputFileTracingRoot to avoid lockfile warning
+  outputFileTracingRoot: process.cwd(),
 }
 
 module.exports = nextConfig

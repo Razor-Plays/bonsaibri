@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
 
+// Configure for static export
+export const dynamic = 'force-static'
+
 export async function GET() {
   try {
     const posts = await prisma.blogPost.findMany({

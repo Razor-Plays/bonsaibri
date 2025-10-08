@@ -38,10 +38,7 @@ async function main() {
     })
     
     console.log(`✓ Created blog post: ${blogPost.title} (ID: ${blogPost.id})`)
-    console.log(`  ✓ Image path: ${blogPost.image}`)
     console.log(`  ✓ Content length: ${blogPost.content.length} characters`)
-    console.log(`  ✓ Category: ${blogPost.category}`)
-    console.log(`  ✓ Tags: ${blogPost.tags}`)
     console.log(`  ✓ Published at: ${blogPost.publishedAt}`)
   }
 

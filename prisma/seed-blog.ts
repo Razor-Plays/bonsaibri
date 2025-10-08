@@ -17,12 +17,7 @@ async function main() {
         published: true,
         publishedAt: new Date(mockPost.date),
         createdAt: mockPost.createdAt,
-        updatedAt: mockPost.updatedAt,
-        category: mockPost.category,
-        tags: mockPost.tags,
-        readTime: mockPost.readTime,
-        excerpt: mockPost.excerpt,
-        image: mockPost.image
+        updatedAt: mockPost.updatedAt
       }
     })
     console.log(`Created blog post: ${blogPost.title}`)
