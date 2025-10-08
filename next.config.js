@@ -1,14 +1,11 @@
-const repoName = 'bonsaibri';
+const isCI = !!process.env.GITHUB_ACTIONS
+const repo = process.env.GITHUB_REPOSITORY?.split('/')[1] || ''
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
   output: 'export',
-  images: { 
-    unoptimized: true 
-  },
-  basePath: process.env.GITHUB_ACTIONS ? `/${repoName}` : '',
-  assetPrefix: process.env.GITHUB_ACTIONS ? `/${repoName}/` : '',
+  images: { unoptimized: true },
+  basePath: isCI ? `/${repo}` : '',
+  assetPrefix: isCI ? `/${repo}/` : '',
   trailingSlash: true,
 }
-
-module.exports = nextConfig
