@@ -1,16 +1,14 @@
+const repoName = 'bonsaibri';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  basePath: process.env.NODE_ENV === 'production' ? '/your-repo-name' : '',
-  images: {
-    unoptimized: true
+  images: { 
+    unoptimized: true 
   },
-  // Ensure static export works properly
+  basePath: process.env.GITHUB_ACTIONS ? `/${repoName}` : '',
+  assetPrefix: process.env.GITHUB_ACTIONS ? `/${repoName}/` : '',
   trailingSlash: true,
-  // Handle API routes in static export
-  distDir: 'out',
-  // Set outputFileTracingRoot to avoid lockfile warning
-  outputFileTracingRoot: process.cwd(),
 }
 
 module.exports = nextConfig
