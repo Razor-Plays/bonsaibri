@@ -1,11 +1,8 @@
-const isCI = !!process.env.GITHUB_ACTIONS
-const repo = process.env.GITHUB_REPOSITORY?.split('/')[1] || ''
-
 /** @type {import('next').NextConfig} */
 module.exports = {
-  output: 'export',
+  output: 'export',                // next export -> static
   images: { unoptimized: true },
-  basePath: isCI ? `/${repo}` : '',
-  assetPrefix: isCI ? `/${repo}/` : '',
-  trailingSlash: true,
+  basePath: '/bonsaibri',          // project pages live at /<repo>
+  assetPrefix: '/bonsaibri/',      // static assets served under /<repo>/
+  trailingSlash: true,             // ensures folder/index.html output
 }

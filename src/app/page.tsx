@@ -64,22 +64,22 @@ export default async function HomePage() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32">
-        <div className="absolute inset-0">
-          <Image
-            src="/banner.jpg"
-            alt="Bonsai Bri Lifestyle Banner"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/40 dark:bg-black/50" />
-        </div>
+          <div className="absolute inset-0">
+            <Image
+              src="banner.jpg"
+              alt="Bonsai Bri Lifestyle Banner"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-black/40 dark:bg-black/50" />
+          </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="mb-8">
               <div className="relative w-128 h-64 mx-auto mb-6">
                 <Image
-                  src="/banner-logo.png"
+                  src="banner-logo.png"
                   alt="Bonsai Bri Banner Logo"
                   fill
                   className="object-contain"
@@ -205,7 +205,7 @@ export default async function HomePage() {
             <div className="relative">
               <div className="aspect-square bg-gray-200 dark:bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
                 <Image
-                  src="/bri-intro.jpg"
+                  src="bri-intro.jpg"
                   alt="Brian Introduction"
                   fill
                   className="object-cover rounded-lg"
