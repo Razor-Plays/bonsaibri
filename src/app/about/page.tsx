@@ -49,7 +49,7 @@ export default function AboutPage() {
             <div className="relative">
               <div className="aspect-[4/5] bg-gray-200 dark:bg-gray-800 rounded-lg flex items-center justify-center overflow-hidden">
                 <Image
-                  src="bri-at-work.jpg"
+                  src="/bonsaibri/bri-at-work.jpg"
                   alt="Brian at work"
                   fill
                   className="object-cover rounded-lg"
