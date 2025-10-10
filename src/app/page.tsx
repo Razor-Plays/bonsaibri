@@ -37,21 +37,21 @@ const categories = [
     description: 'Handcrafted pots for your miniature trees',
     icon: Leaf,
     href: '/products?category=BONSAI_POTS',
-    image: '/category-bonsai.jpg'
+    image: 'category-bonsai.jpg'
   },
   {
     name: 'Christmas Ornaments',
     description: 'Festive decorations for the holidays',
     icon: Gift,
     href: '/products?category=CHRISTMAS_ORNAMENTS',
-    image: '/category-christmas.jpg'
+    image: 'category-christmas.jpg'
   },
   {
     name: 'Smoking Accessories',
     description: 'Artisan pipes, bongs, and ashtrays',
     icon: Sparkles,
     href: '/products?category=SMOKING_ACCESSORIES',
-    image: '/category-smoking.jpg'
+    image: 'category-smoking.jpg'
   }
 ]
 
