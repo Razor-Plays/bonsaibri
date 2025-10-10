@@ -31,14 +31,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <link rel="icon" href="browser-icon.png" />
         <link rel="shortcut icon" href="browser-icon.png" />
         <link rel="apple-touch-icon" href="browser-icon.png" />
       </head>
       <body
-        className={`${inter.variable} ${notoSerif.variable} font-sans antialiased min-h-screen flex flex-col`}
+        className={`${inter.variable} ${notoSerif.variable} font-sans antialiased min-h-screen flex flex-col bg-white`}
       >
         <Navbar />
         <main className="flex-1">
