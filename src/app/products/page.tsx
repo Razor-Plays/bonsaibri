@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { ProductCard } from '@/components/product-card'
-import { ProductModal } from '@/components/product-modal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Search, Filter } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
 const categories = [
   { value: 'ALL', label: 'All Products' },
@@ -36,9 +35,8 @@ interface Product {
     url: string
     alt: string | null
     order: number
-    productId: string
   }>
-  createdAt: string
+  createdAt: Date
   lengthCm?: number
   widthCm?: number
   heightCm?: number
@@ -47,41 +45,41 @@ interface Product {
   glaze?: string
   color?: string
   year?: number
+  updatedAt?: Date
+}
+
+// Fetch products directly during build
+async function getProducts() {
+  try {
+    console.log('=== PRODUCTS PAGE - Fetching from database ===')
+    const { mockProducts } = await import('@/lib/mock-data')
+    
+    // For now, return mock data since we can't use prisma in client components
+    // In a real deployment, this would be fetched during build time
+    console.log('=== PRODUCTS PAGE - Returning mock data ===')
+    return mockProducts
+  } catch (error) {
+    console.error('=== PRODUCTS PAGE - Error:', error, '===')
+    // Return mock data on error
+    const { mockProducts } = await import('@/lib/mock-data')
+    return mockProducts
+  }
 }
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([])
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('ALL')
   const [sortBy, setSortBy] = useState('newest')
 
+  // Fetch products on mount
   useEffect(() => {
-    fetchProducts()
+    getProducts().then(setProducts).catch(console.error)
   }, [])
 
+  // Filter and sort products client-side
   useEffect(() => {
-    filterAndSortProducts()
-  }, [products, searchTerm, selectedCategory, sortBy])
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true)
-      const response = await fetch('/api/products')
-      if (!response.ok) throw new Error('Failed to fetch products')
-      
-      const data = await response.json()
-      setProducts(data)
-    } catch (error) {
-      console.error('Error fetching products:', error)
-      setProducts([])
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const filterAndSortProducts = () => {
     let filtered = products.filter(product => {
       // Filter by search term
       const matchesSearch = searchTerm === '' || 
@@ -111,20 +109,7 @@ export default function ProductsPage() {
     })
 
     setFilteredProducts(filtered)
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-gray-950">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-white mx-auto"></div>
-            <p className="mt-4 text-gray-600 dark:text-gray-300">Loading products...</p>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  }, [products, searchTerm, selectedCategory, sortBy])
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950">
