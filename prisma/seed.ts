@@ -28,8 +28,8 @@ async function main() {
       status: 'AVAILABLE',
       isFeatured: true,
       images: [
-        { url: '/bonsai-pot-1.jpg', alt: 'Handcrafted round bonsai pot', order: 0 },
-        { url: '/bonsai-pot-2.jpg', alt: 'Detail view of bonsai pot', order: 1 }
+        { url: 'bonsai-pot-1.jpg', alt: 'Handcrafted round bonsai pot', order: 0 },
+        { url: 'bonsai-pot-2.jpg', alt: 'Detail view of bonsai pot', order: 1 }
       ]
     },
     {
@@ -55,7 +55,7 @@ async function main() {
       status: 'AVAILABLE',
       isFeatured: true,
       images: [
-        { url: '/bonsai-pot-2.jpg', alt: 'Rectangular bonsai pot with celadon glaze', order: 0 }
+        { url: 'bonsai-pot-2.jpg', alt: 'Rectangular bonsai pot with celadon glaze', order: 0 }
       ]
     },
     {
@@ -81,7 +81,7 @@ async function main() {
       status: 'SOLD',
       isFeatured: false,
       images: [
-        { url: '/bonsai-pot-1.jpg', alt: 'Traditional oval bonsai pot', order: 0 }
+        { url: 'bonsai-pot-1.jpg', alt: 'Traditional oval bonsai pot', order: 0 }
       ]
     },
     {
@@ -107,7 +107,7 @@ async function main() {
       status: 'AVAILABLE',
       isFeatured: true,
       images: [
-        { url: '/ornament-1.jpg', alt: 'Ceramic snowflake Christmas ornament', order: 0 }
+        { url: 'ornament-1.jpg', alt: 'Ceramic snowflake Christmas ornament', order: 0 }
       ]
     },
     {
@@ -133,7 +133,7 @@ async function main() {
       status: 'AVAILABLE',
       isFeatured: false,
       images: [
-        { url: '/ornament-2.jpg', alt: 'Handcrafted Christmas tree ornament', order: 0 }
+        { url: 'ornament-2.jpg', alt: 'Handcrafted Christmas tree ornament', order: 0 }
       ]
     },
     {
@@ -159,7 +159,7 @@ async function main() {
       status: 'CUSTOM',
       isFeatured: false,
       images: [
-        { url: '/ornament-1.jpg', alt: 'Ceramic angel Christmas ornament', order: 0 }
+        { url: 'ornament-1.jpg', alt: 'Ceramic angel Christmas ornament', order: 0 }
       ]
     },
     {
@@ -185,7 +185,7 @@ async function main() {
       status: 'AVAILABLE',
       isFeatured: true,
       images: [
-        { url: '/pipe-1.jpg', alt: 'Artisan ceramic smoking pipe', order: 0 }
+        { url: 'pipe-1.jpg', alt: 'Artisan ceramic smoking pipe', order: 0 }
       ]
     },
     {
@@ -211,7 +211,7 @@ async function main() {
       status: 'AVAILABLE',
       isFeatured: false,
       images: [
-        { url: '/ashtray-1.jpg', alt: 'Small ceramic water pipe', order: 0 }
+        { url: 'ashtray-1.jpg', alt: 'Small ceramic water pipe', order: 0 }
       ]
     },
     {
@@ -237,7 +237,7 @@ async function main() {
       status: 'AVAILABLE',
       isFeatured: false,
       images: [
-        { url: '/ashtray-1.jpg', alt: 'Ceramic leaf design ashtray', order: 0 }
+        { url: 'ashtray-1.jpg', alt: 'Ceramic leaf design ashtray', order: 0 }
       ]
     }
   ]
