@@ -10,7 +10,7 @@ export const mockProducts = [
     status: 'AVAILABLE',
     isFeatured: true,
     images: [
-      { id: '1', url: '/bonsai-pot-1.jpg', alt: 'Handcrafted round bonsai pot', order: 0 }
+      { id: '1', url: 'bonsai-pot-1.jpg', alt: 'Handcrafted round bonsai pot', order: 0 }
     ],
     lengthCm: 15,
     widthCm: 10,
@@ -33,7 +33,7 @@ export const mockProducts = [
     status: 'AVAILABLE',
     isFeatured: true,
     images: [
-      { id: '2', url: '/bonsai-pot-2.jpg', alt: 'Rectangular bonsai pot with celadon glaze', order: 0 }
+      { id: '2', url: 'bonsai-pot-2.jpg', alt: 'Rectangular bonsai pot with celadon glaze', order: 0 }
     ],
     lengthCm: 20,
     widthCm: 15,
@@ -56,7 +56,7 @@ export const mockProducts = [
     status: 'AVAILABLE',
     isFeatured: true,
     images: [
-      { id: '3', url: '/ornament-1.jpg', alt: 'Ceramic snowflake ornament', order: 0 }
+      { id: '3', url: 'ornament-1.jpg', alt: 'Ceramic snowflake ornament', order: 0 }
     ],
     lengthCm: 8,
     widthCm: 8,
@@ -79,7 +79,7 @@ export const mockProducts = [
     status: 'AVAILABLE',
     isFeatured: false,
     images: [
-      { id: '4', url: '/ornament-2.jpg', alt: 'Handcrafted Christmas tree ornament', order: 0 }
+      { id: '4', url: 'ornament-2.jpg', alt: 'Handcrafted Christmas tree ornament', order: 0 }
     ],
     lengthCm: 6,
     widthCm: 6,
@@ -102,7 +102,7 @@ export const mockProducts = [
     status: 'AVAILABLE',
     isFeatured: true,
     images: [
-      { id: '5', url: '/pipe-1.jpg', alt: 'Artisan ceramic smoking pipe', order: 0 }
+      { id: '5', url: 'pipe-1.jpg', alt: 'Artisan ceramic smoking pipe', order: 0 }
     ],
     lengthCm: 12,
     widthCm: 3,
@@ -125,7 +125,7 @@ export const mockProducts = [
     status: 'AVAILABLE',
     isFeatured: false,
     images: [
-      { id: '6', url: '/ashtray-1.jpg', alt: 'Ceramic leaf design ashtray', order: 0 }
+      { id: '6', url: 'ashtray-1.jpg', alt: 'Ceramic leaf design ashtray', order: 0 }
     ],
     lengthCm: 15,
     widthCm: 10,
@@ -151,7 +151,7 @@ export const mockBlogPosts = [
     category: 'Bonsai Care',
     tags: ['bonsai', 'pots', 'styling'],
     readTime: '3 min read',
-    image: '/blog-bonsai-pot.jpg',
+    image: 'blog-bonsai-pot.jpg',
     content: 'Full blog post content here...',
     createdAt: new Date('2024-01-15'),
     updatedAt: new Date('2024-01-15')
@@ -166,7 +166,7 @@ export const mockBlogPosts = [
     category: 'Techniques',
     tags: ['christmas', 'ornaments', 'handmade'],
     readTime: '3 min read',
-    image: '/blog-christmas-ornaments.jpg',
+    image: 'blog-christmas-ornaments.jpg',
     content: 'Full blog post content here...',
     createdAt: new Date('2024-01-08'),
     updatedAt: new Date('2024-01-08')
@@ -181,7 +181,7 @@ export const mockBlogPosts = [
     category: 'Lifestyle',
     tags: ['slow living', 'mindfulness', 'craft'],
     readTime: '3 min read',
-    image: '/blog-slow-living.jpg',
+    image: 'blog-slow-living.jpg',
     content: 'Full blog post content here...',
     createdAt: new Date('2024-01-01'),
     updatedAt: new Date('2024-01-01')

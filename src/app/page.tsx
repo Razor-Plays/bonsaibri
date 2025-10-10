@@ -25,9 +25,8 @@ async function getFeaturedProducts() {
     return products
   } catch (error) {
     console.error('Error fetching featured products:', error)
-    // If database is empty, return mock data for now
-    const { mockProducts } = await import('@/lib/mock-data')
-    return mockProducts.filter(p => p.isFeatured).slice(0, 3)
+    // Return empty array instead of mock data - we want real data only
+    return []
   }
 }
 
