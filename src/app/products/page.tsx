@@ -48,21 +48,20 @@ interface Product {
   updatedAt?: Date
 }
 
-// Fetch products directly during build
+// Fetch products from API
 async function getProducts() {
   try {
-    console.log('=== PRODUCTS PAGE - Fetching from database ===')
-    const { mockProducts } = await import('@/lib/mock-data')
+    console.log('=== PRODUCTS PAGE - Fetching from API ===')
+    const response = await fetch('/api/products')
+    if (!response.ok) throw new Error('Failed to fetch products')
     
-    // For now, return mock data since we can't use prisma in client components
-    // In a real deployment, this would be fetched during build time
-    console.log('=== PRODUCTS PAGE - Returning mock data ===')
-    return mockProducts
+    const data = await response.json()
+    console.log('=== PRODUCTS PAGE - Found', data.length, 'products ===')
+    return data
   } catch (error) {
     console.error('=== PRODUCTS PAGE - Error:', error, '===')
-    // Return mock data on error
-    const { mockProducts } = await import('@/lib/mock-data')
-    return mockProducts
+    // Return empty array on error
+    return []
   }
 }
 
