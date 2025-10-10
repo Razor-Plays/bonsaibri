@@ -85,6 +85,8 @@ jobs:
           echo "Seeding database..."
           npx prisma db seed
           echo "Database setup complete!"
+        env:
+          DATABASE_URL: "file:./dev.db"
 
       - name: Build Next.js
         run: |
