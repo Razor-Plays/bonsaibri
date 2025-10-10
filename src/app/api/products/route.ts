@@ -21,19 +21,27 @@ export async function GET() {
     
     console.log('=== API PRODUCTS GET - Found', products.length, 'products ===')
     
-    // If no products in database, return mock data
+    // If no products in database, return empty array
     if (products.length === 0) {
-      console.log('=== API PRODUCTS GET - No products in database, returning mock data ===')
-      const { mockProducts } = await import('@/lib/mock-data')
-      return NextResponse.json(mockProducts)
+      console.log('=== API PRODUCTS GET - No products in database, returning empty array ===')
+      return NextResponse.json([])
     }
     
-    return NextResponse.json(products)
+    // Return products with absolute image URLs for Vercel
+    const productsWithAbsoluteUrls = products.map(product => ({
+      ...product,
+      images: product.images.map(image => ({
+        ...image,
+        // Ensure image URLs are absolute paths for Vercel
+        url: image.url.startsWith('/') ? image.url : '/' + image.url
+      }))
+    }))
+    
+    return NextResponse.json(productsWithAbsoluteUrls)
   } catch (error) {
     console.error('=== API PRODUCTS GET - Error:', error, '===')
-    // Return mock data on error
-    const { mockProducts } = await import('@/lib/mock-data')
-    return NextResponse.json(mockProducts)
+    // Return empty array on error
+    return NextResponse.json([])
   }
 }
 
