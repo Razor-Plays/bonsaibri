@@ -74,6 +74,18 @@ jobs:
           echo "Installing ALL Radix UI dependencies explicitly..."
           npm install @radix-ui/react-tabs @radix-ui/react-scroll-area @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-label @radix-ui/react-select @radix-ui/react-slot @radix-ui/react-toast --force
 
+      - name: Setup Database
+        run: |
+          echo "Setting up database in $PROJECT_DIR..."
+          cd "$PROJECT_DIR"
+          echo "Generating Prisma Client..."
+          npx prisma generate
+          echo "Running database migrations..."
+          npx prisma migrate deploy
+          echo "Seeding database..."
+          npx prisma db seed
+          echo "Database setup complete!"
+
       - name: Build Next.js
         run: |
           echo "Building Next.js in $PROJECT_DIR..."
