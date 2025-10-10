@@ -1,0 +1,123 @@
+name: Deploy Next.js site to Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Debug Directory Structure
+        run: |
+          echo "=== DEBUG: Full Directory Structure ==="
+          echo "Current directory: $(pwd)"
+          echo "Root contents:"
+          ls -la
+          echo ""
+          echo "Looking for package.json files:"
+          find . -name "package.json" -type f
+          echo ""
+          echo "Looking for node_modules directories:"
+          find . -name "node_modules" -type d | head -5
+          echo ""
+          echo "=== END DEBUG ==="
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Find Next.js Project
+        run: |
+          echo "Searching for Next.js project..."
+          if [ -f "next.config.js" ]; then
+            echo "Found Next.js config in root directory"
+            PROJECT_DIR="."
+          elif [ -d "bonsai" ] && [ -f "bonsai/next.config.js" ]; then
+            echo "Found Next.js config in bonsai directory"
+            PROJECT_DIR="bonsai"
+          else
+            echo "Searching for Next.js config in subdirectories..."
+            PROJECT_DIR=$(find . -name "next.config.js" -type f -exec dirname {} \; | head -1)
+            if [ -n "$PROJECT_DIR" ]; then
+              echo "Found Next.js config in: $PROJECT_DIR"
+            else
+              echo "ERROR: No next.config.js found!"
+              exit 1
+            fi
+          fi
+          echo "PROJECT_DIR=$PROJECT_DIR" >> $GITHUB_ENV
+
+      - name: Clean Install Dependencies
+        run: |
+          echo "Installing dependencies in $PROJECT_DIR..."
+          cd "$PROJECT_DIR"
+          echo "Removing existing node_modules and package-lock.json..."
+          rm -rf node_modules package-lock.json
+          echo "Installing fresh dependencies..."
+          npm install --force --no-package-lock
+          echo "Installing ALL Radix UI dependencies explicitly..."
+          npm install @radix-ui/react-tabs @radix-ui/react-scroll-area @radix-ui/react-dialog @radix-ui/react-dropdown-menu @radix-ui/react-label @radix-ui/react-select @radix-ui/react-slot @radix-ui/react-toast --force
+
+      - name: Build Next.js
+        run: |
+          echo "Building Next.js in $PROJECT_DIR..."
+          cd "$PROJECT_DIR"
+          npm run build
+
+      - name: Prepare artifact
+        run: |
+          echo "Preparing artifact..."
+          cd "$PROJECT_DIR"
+          # Look for the build output
+          if [ -d "out/bonsaibri" ]; then
+            echo "Found out/bonsaibri directory"
+            UPLOAD_DIR="out/bonsaibri"
+          elif [ -d "out" ]; then
+            echo "Found out directory"
+            UPLOAD_DIR="out"
+          else
+            echo "ERROR: No build output found!"
+            ls -la
+            exit 1
+          fi
+          
+          echo "Upload directory: $UPLOAD_DIR"
+          echo "Contents of upload directory:"
+          ls -la "$UPLOAD_DIR"
+          
+          touch "$UPLOAD_DIR/.nojekyll"
+          cp "$UPLOAD_DIR/index.html" "$UPLOAD_DIR/404.html" 2>/dev/null || echo "No index.html found to copy"
+          
+          echo "UPLOAD_DIR=$UPLOAD_DIR" >> $GITHUB_ENV
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.UPLOAD_DIR }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
