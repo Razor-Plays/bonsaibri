@@ -62,7 +62,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 lg:py-32">
+      <section className="relative py-16 lg:py-32">
           <div className="absolute inset-0">
             <Image
               src="banner.jpg"
@@ -75,8 +75,8 @@ export default async function HomePage() {
           </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="mb-8">
-              <div className="relative w-128 h-64 mx-auto mb-6">
+            <div className="mb-6 lg:mb-8">
+              <div className="relative w-64 h-32 md:w-96 md:h-48 lg:w-128 lg:h-64 mx-auto mb-4 lg:mb-6">
                 <Image
                   src="banner-logo.png"
                   alt="Bonsai Bri Banner Logo"
@@ -85,19 +85,19 @@ export default async function HomePage() {
                   priority
                 />
               </div>
-              <p className="text-xl md:text-2xl text-white dark:text-gray-100 max-w-3xl mx-auto">
+              <p className="text-lg md:text-xl lg:text-2xl text-white dark:text-gray-100 max-w-3xl mx-auto px-4">
                 Hand-made pottery for bonsai, holidays & the slow life.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 lg:gap-4 justify-center">
               <Link href="/products">
-                <Button size="lg" className="text-lg">
+                <Button size="lg" className="text-base lg:text-lg">
                   View Products
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-4 w-4 lg:h-5 lg:w-5" />
                 </Button>
               </Link>
               <Link href="/contact">
-                <Button size="lg" variant="outline" className="text-lg">
+                <Button size="lg" variant="outline" className="text-base lg:text-lg">
                   Contact
                 </Button>
               </Link>
