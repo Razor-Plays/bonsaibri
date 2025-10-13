@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npm run prisma:generate && npm run vercel:seed && next build --turbopack",
+    "build": "npm run prisma:generate && npm run prisma:migrate && npm run vercel:seed && next build --turbopack",
     "start": "next start",
     "lint": "next lint",
     "export": "next build && next export",
