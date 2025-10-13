@@ -26,7 +26,7 @@ export function Navbar() {
             <Link href="/" className="flex items-center space-x-2">
               <div className="relative w-42 h-11">
                 <Image
-                  src="/bonsaibri/header-logo.png"
+                  src="/header-logo.png"
                   alt="Bonsai Bri Logo"
                   fill
                   className="object-contain"
