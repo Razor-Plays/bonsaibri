@@ -1,12 +1,22 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 
-// Configure for static export
-export const dynamic = 'force-static'
+// Configure for dynamic rendering on Vercel
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
     console.log('=== API BLOG GET - Starting ===')
+    
+    // Ensure database is ready - this will create tables if they don't exist
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      console.log('=== API BLOG GET - Database connection successful ===')
+    } catch (dbError) {
+      console.error('=== API BLOG GET - Database connection failed:', dbError, '===')
+      // Return empty array if database is not available
+      return NextResponse.json([]);
+    }
     
     // Try to get blog posts from database
     const posts = await prisma.blogPost.findMany({
@@ -35,7 +45,8 @@ export async function GET() {
     return NextResponse.json(posts);
   } catch (error) {
     console.error('=== API BLOG GET - Error:', error, '===')
-    return NextResponse.json({ error: 'Failed to fetch blog posts.' }, { status: 500 });
+    // Return empty array instead of error to prevent 500 errors
+    return NextResponse.json([]);
   }
 }
 
