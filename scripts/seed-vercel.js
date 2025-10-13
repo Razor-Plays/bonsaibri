@@ -32,11 +32,17 @@ async function seedVercelDatabase() {
       }
     }
     
-    // Check if blog posts already exist
-    const existingPosts = await prisma.blogPost.count();
-    if (existingPosts > 0) {
-      console.log('=== Database already seeded, skipping ===');
-      return;
+    // Check if blog posts table exists first
+    try {
+      const existingPosts = await prisma.blogPost.count();
+      if (existingPosts > 0) {
+        console.log('=== Database already seeded, skipping ===');
+        return;
+      }
+    } catch (tableError) {
+      console.log('=== BlogPost table does not exist yet ===');
+      console.log('=== Table error:', tableError.message, '===');
+      // Table doesn't exist, proceed with seeding
     }
 
     // Create the 3 blog posts you mentioned
