@@ -17,8 +17,8 @@ try {
   console.log('=== Step 2: Deploy Database Migrations ===');
   execSync('npx prisma migrate deploy', { stdio: 'inherit' });
   
-  console.log('=== Step 3: Seed Database ===');
-  execSync('node scripts/seed-vercel.js', { stdio: 'inherit' });
+  console.log('=== Step 3: Force Seed Database ===');
+  execSync('node scripts/force-seed-vercel.js', { stdio: 'inherit' });
   
   console.log('=== Step 4: Build Next.js ===');
   execSync('next build --turbopack', { stdio: 'inherit' });
