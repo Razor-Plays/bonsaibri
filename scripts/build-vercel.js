@@ -18,7 +18,13 @@ try {
   execSync('npx prisma migrate deploy', { stdio: 'inherit' });
   
   console.log('=== Step 3: Force Seed Database ===');
-  execSync('node scripts/force-seed-vercel.js', { stdio: 'inherit' });
+  try {
+    execSync('node scripts/force-seed-vercel.js', { stdio: 'inherit' });
+    console.log('=== Database seeding completed ===');
+  } catch (seedError) {
+    console.error('=== Database seeding failed, but continuing build ===');
+    console.error('Seed error:', seedError.message);
+  }
   
   console.log('=== Step 4: Build Next.js ===');
   execSync('next build --turbopack', { stdio: 'inherit' });
