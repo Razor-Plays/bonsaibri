@@ -19,9 +19,9 @@ export const metadata: Metadata = {
   description: "Hand-made pottery for bonsai, holidays & the slow life. Artisan ceramics from Northern Ontario.",
   keywords: "bonsai pots, handcrafted pottery, christmas ornaments, smoking accessories, northern ontario",
   icons: {
-    icon: "browser-icon.png",
-    shortcut: "browser-icon.png",
-    apple: "browser-icon.png",
+    icon: "/browser-icon.png",
+    shortcut: "/browser-icon.png",
+    apple: "/browser-icon.png",
   },
 }
 
@@ -33,9 +33,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="browser-icon.png" />
-        <link rel="shortcut icon" href="browser-icon.png" />
-        <link rel="apple-touch-icon" href="browser-icon.png" />
+        <link rel="icon" href="/browser-icon.png" />
+        <link rel="shortcut icon" href="/browser-icon.png" />
+        <link rel="apple-touch-icon" href="/browser-icon.png" />
       </head>
       <body
         className={`${inter.variable} ${notoSerif.variable} font-sans antialiased min-h-screen flex flex-col bg-white`}
