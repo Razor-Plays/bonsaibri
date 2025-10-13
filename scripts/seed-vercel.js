@@ -35,6 +35,7 @@ async function seedVercelDatabase() {
     // Check if blog posts table exists first
     try {
       const existingPosts = await prisma.blogPost.count();
+      console.log('=== Found', existingPosts, 'existing blog posts ===');
       if (existingPosts > 0) {
         console.log('=== Database already seeded, skipping ===');
         return;
@@ -114,10 +115,15 @@ Whether you're a seasoned bonsai artist or just beginning your journey, remember
     console.log('=== Creating', blogPosts.length, 'blog posts ===');
     
     for (const post of blogPosts) {
-      await prisma.blogPost.create({
-        data: post
-      });
-      console.log('=== Created post:', post.title, '===');
+      try {
+        const created = await prisma.blogPost.create({
+          data: post
+        });
+        console.log('=== Successfully created post:', created.title, 'with ID:', created.id, '===');
+      } catch (createError) {
+        console.error('=== Failed to create post:', post.title, 'Error:', createError.message, '===');
+        throw createError;
+      }
     }
 
     console.log('=== DATABASE SEEDING COMPLETE ===');
