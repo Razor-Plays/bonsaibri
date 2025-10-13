@@ -21,10 +21,36 @@ export async function GET() {
     
     console.log('=== API PRODUCTS GET - Found', products.length, 'products ===')
     
-    // If no products in database, return empty array
+    // Return all products from database (don't filter by status for now)
     if (products.length === 0) {
-      console.log('=== API PRODUCTS GET - No products in database, returning empty array ===')
-      return NextResponse.json([])
+      console.log('=== API PRODUCTS GET - No products found, trying without status filter ===')
+      // Try again without status filter to debug
+      const allProducts = await prisma.product.findMany({
+        include: {
+          images: {
+            orderBy: { order: 'asc' }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      })
+      console.log('=== API PRODUCTS GET - Found', allProducts.length, 'total products ===')
+      
+      if (allProducts.length === 0) {
+        console.log('=== API PRODUCTS GET - Still no products, returning empty array ===')
+        return NextResponse.json([])
+      }
+      
+      // Return all products with absolute image URLs for Vercel
+      const productsWithAbsoluteUrls = allProducts.map(product => ({
+        ...product,
+        images: product.images.map(image => ({
+          ...image,
+          // Ensure image URLs are absolute paths for Vercel
+          url: image.url.startsWith('/') ? image.url : '/' + image.url
+        }))
+      }))
+      
+      return NextResponse.json(productsWithAbsoluteUrls)
     }
     
     // Return products with absolute image URLs for Vercel
