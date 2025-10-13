@@ -1,3 +1,10 @@
+// Set up database URL for Vercel environment
+const path = require('path');
+const databaseUrl = process.env.DATABASE_URL || `file:${path.join(process.cwd(), 'dev.db')}`;
+process.env.DATABASE_URL = databaseUrl;
+
+console.log('=== DATABASE URL SET TO:', databaseUrl, '===');
+
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
@@ -5,6 +12,26 @@ async function seedVercelDatabase() {
   console.log('=== SEEDING VERCEL DATABASE ===');
   
   try {
+    // First, ensure database tables exist by running a simple query
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      console.log('=== Database connection successful ===');
+    } catch (dbError) {
+      console.log('=== Database may not exist or tables not created yet ===');
+      console.log('=== Attempting to create database structure ===');
+      
+      // Try to run migrations or create tables
+      try {
+        const { execSync } = require('child_process');
+        execSync('npx prisma migrate deploy', { stdio: 'inherit' });
+        console.log('=== Database migrations applied successfully ===');
+      } catch (migrateError) {
+        console.log('=== Migration failed, trying to create tables manually ===');
+        // Create tables manually if migrations fail
+        await createTablesManually();
+      }
+    }
+    
     // Check if blog posts already exist
     const existingPosts = await prisma.blogPost.count();
     if (existingPosts > 0) {
