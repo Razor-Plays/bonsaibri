@@ -33,9 +33,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/browser-icon.png" />
-        <link rel="shortcut icon" href="/browser-icon.png" />
+         <link rel="icon" type="image/png" href="/browser-icon.png" />
+        <link rel="shortcut icon" type="image/png" href="/browser-icon.png" />
         <link rel="apple-touch-icon" href="/browser-icon.png" />
+        <meta name="theme-color" content="#ffffff" />
       </head>
       <body
         className={`${inter.variable} ${notoSerif.variable} font-sans antialiased min-h-screen flex flex-col bg-white`}
