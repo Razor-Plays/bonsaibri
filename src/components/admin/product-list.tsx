@@ -31,21 +31,13 @@ export function ProductList() {
       
       if (response.ok) {
         const data = await response.json()
-        console.log('Products fetched successfully:', data.length, 'products')
         setProducts(data)
       } else {
-        console.log('API failed with status:', response.status)
-        // If API fails, use mock data
-        console.log('Using mock data as fallback')
-        const { mockProducts } = await import('@/lib/mock-data')
-        setProducts(mockProducts)
+        setError('Failed to load products from database.')
       }
     } catch (error) {
       console.error('Error fetching products:', error)
-      // Use mock data as fallback
-      console.log('Using mock data due to error:', error)
-      const { mockProducts } = await import('@/lib/mock-data')
-      setProducts(mockProducts)
+      setError('Failed to connect to database.')
     } finally {
       setLoading(false)
     }
