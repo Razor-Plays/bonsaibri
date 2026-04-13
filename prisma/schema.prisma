@@ -52,6 +52,7 @@ model BlogPost {
   slug        String    @unique
   content     String
   excerpt     String?
+  image       String?
   author      String?
   published   Boolean   @default(false)
   publishedAt DateTime?
