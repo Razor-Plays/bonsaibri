@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { uploadToCloudinaryServer } from '@/lib/cloudinary'
 
-// Configure for static export
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
@@ -74,35 +74,64 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     console.log('=== API PRODUCTS POST - Starting ===')
-    const body = await request.json()
-    console.log('=== API PRODUCTS POST - Received data:', body, '===')
+    const formData = await request.formData()
+
+    const title = formData.get('title') as string
+    const category = formData.get('category') as string
+    const description = (formData.get('description') as string) || null
+    const priceRaw = formData.get('price') as string
+    const price = priceRaw ? parseInt(priceRaw, 10) : null
+    const status = (formData.get('status') as string) || 'AVAILABLE'
+    const isFeatured = formData.get('isFeatured') === 'true'
+    const material = (formData.get('material') as string) || null
+    const glaze = (formData.get('glaze') as string) || null
+    const color = (formData.get('color') as string) || null
+    const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
+
+    console.log('=== API PRODUCTS POST - Parsed fields:', { title, category, status }, '===')
+
+    // Upload images to Cloudinary
+    const imageFiles = formData.getAll('images') as File[]
+    const imageUrls: string[] = []
+
+    for (const file of imageFiles) {
+      if (file && file.size > 0) {
+        const arrayBuffer = await file.arrayBuffer()
+        const buffer = Buffer.from(arrayBuffer)
+        const url = await uploadToCloudinaryServer(buffer, file.name)
+        imageUrls.push(url)
+        console.log('=== API PRODUCTS POST - Uploaded image to Cloudinary:', url, '===')
+      }
+    }
 
     const product = await prisma.product.create({
       data: {
-        title: body.title,
-        slug: body.slug || body.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''),
-        category: body.category,
-        description: body.description || null,
-        price: body.price,
-        status: body.status || 'AVAILABLE',
-        isFeatured: body.isFeatured || false,
-        lengthCm: body.lengthCm || null,
-        widthCm: body.widthCm || null,
-        heightCm: body.heightCm || null,
-        weightG: body.weightG || null,
-        material: body.material || null,
-        glaze: body.glaze || null,
-        color: body.color || null,
-        year: body.year || new Date().getFullYear(),
+        title,
+        slug,
+        category,
+        description,
+        price,
+        status,
+        isFeatured,
+        material,
+        glaze,
+        color,
+        year: new Date().getFullYear(),
         createdAt: new Date(),
-        updatedAt: new Date()
+        updatedAt: new Date(),
+        images: {
+          create: imageUrls.map((url, index) => ({
+            url,
+            order: index,
+          })),
+        },
       },
       include: {
-        images: true
-      }
+        images: true,
+      },
     })
 
-    console.log('=== API PRODUCTS POST - Created product:', product, '===')
+    console.log('=== API PRODUCTS POST - Created product:', product.id, '===')
     return NextResponse.json(product, { status: 201 })
   } catch (error) {
     console.error('=== API PRODUCTS POST - Error:', error, '===')
