@@ -6,11 +6,12 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const product = await prisma.product.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         images: {
           orderBy: { order: 'asc' },
@@ -31,8 +32,9 @@ export async function GET(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     const formData = await request.formData()
 
@@ -55,21 +57,20 @@ export async function PUT(
     // Delete images marked for removal
     const deleteImageIdsRaw = formData.get('deleteImageIds') as string | null
     if (deleteImageIdsRaw) {
-      const deleteIds = deleteImageIdsRaw.split(',').map((id) => id.trim()).filter(Boolean)
+      const deleteIds = deleteImageIdsRaw.split(',').map((s) => s.trim()).filter(Boolean)
       if (deleteIds.length > 0) {
         await prisma.image.deleteMany({
-          where: { id: { in: deleteIds }, productId: params.id },
+          where: { id: { in: deleteIds }, productId: id },
         })
       }
     }
 
     // Update per-image position values
     const existingImages = await prisma.image.findMany({
-      where: { productId: params.id },
+      where: { productId: id },
     })
     for (const image of existingImages) {
-      const positionKey = `imagePosition_${image.id}`
-      const positionValue = formData.get(positionKey) as string | null
+      const positionValue = formData.get(`imagePosition_${image.id}`) as string | null
       if (positionValue !== null) {
         await prisma.image.update({
           where: { id: image.id },
@@ -80,21 +81,19 @@ export async function PUT(
 
     // Upload new images
     const imageFiles = formData.getAll('images') as File[]
-    const currentImageCount = await prisma.image.count({ where: { productId: params.id } })
-    let imageOffset = currentImageCount
+    const currentImageCount = await prisma.image.count({ where: { productId: id } })
 
     for (let i = 0; i < imageFiles.length; i++) {
       const file = imageFiles[i]
       if (file && file.size > 0) {
         const buffer = Buffer.from(await file.arrayBuffer())
-        const url = await uploadToCloudinaryServer(buffer, `product-${params.id}-new-${Date.now()}-${i}`)
+        const url = await uploadToCloudinaryServer(buffer, `product-${id}-new-${Date.now()}-${i}`)
         await prisma.image.create({
-          data: { url, alt: title, order: imageOffset + i, productId: params.id },
+          data: { url, alt: title, order: currentImageCount + i, productId: id },
         })
       }
     }
 
-    // Build update data, only include slug if provided
     const updateData: Record<string, unknown> = {
       title, category, description, price,
       status, isFeatured, material, glaze, color,
@@ -105,7 +104,7 @@ export async function PUT(
     }
 
     const updatedProduct = await prisma.product.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
       include: {
         images: {
@@ -123,11 +122,12 @@ export async function PUT(
 
 export async function DELETE(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params
   try {
     await prisma.product.delete({
-      where: { id: params.id },
+      where: { id },
     })
 
     return NextResponse.json({ success: true })
