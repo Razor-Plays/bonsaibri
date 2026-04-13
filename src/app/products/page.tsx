@@ -70,6 +70,14 @@ export default function ProductsPage() {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('ALL')
+
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search)
+  const category = params.get('category')
+  if (category) {
+    setSelectedCategory(category)
+  }
+}, [])
   const [sortBy, setSortBy] = useState('newest')
 
   // Fetch products on mount
