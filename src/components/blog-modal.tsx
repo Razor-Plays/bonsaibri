@@ -59,11 +59,11 @@ export function BlogPostModal({ post, isOpen, onClose }: BlogPostModalProps) {
             <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
               <div className="flex items-center gap-1">
                 <Calendar className="h-4 w-4" />
-                <time dateTime={post.date}>
-                  {new Date(post.date).toLocaleDateString('en-US', { 
-                    month: 'long', 
-                    day: 'numeric', 
-                    year: 'numeric' 
+                <time dateTime={post.publishedAt || post.createdAt}>
+                  {new Date(post.publishedAt || post.createdAt).toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
                   })}
                 </time>
               </div>

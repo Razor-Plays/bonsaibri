@@ -344,6 +344,17 @@ export function ProductEditForm({ product, onSave, onCancel }: ProductEditFormPr
                   alt={image.alt || 'Product image'}
                   className="w-20 h-20 object-cover rounded flex-shrink-0"
                 />
+                <div
+                  style={{
+                    width: 120,
+                    height: 120,
+                    backgroundImage: `url(${image.url})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: imagePositions[image.id] || 'center',
+                    borderRadius: 8,
+                    flexShrink: 0,
+                  }}
+                />
                 <div className="flex flex-col gap-2 flex-1 min-w-0">
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     Current position: <span className="font-medium">{imagePositions[image.id] || 'center'}</span>
@@ -358,13 +369,13 @@ export function ProductEditForm({ product, onSave, onCancel }: ProductEditFormPr
                       }
                       className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
                     >
-                      <option value="center">Center</option>
-                      <option value="top">Top</option>
-                      <option value="bottom">Bottom</option>
-                      <option value="left">Left</option>
-                      <option value="right">Right</option>
-                      <option value="50% 25%">Upper Center</option>
-                      <option value="50% 75%">Lower Center</option>
+                      <option value="center">Center (default)</option>
+                      <option value="top">Show top</option>
+                      <option value="bottom">Show bottom</option>
+                      <option value="left">Show left</option>
+                      <option value="right">Show right</option>
+                      <option value="50% 25%">Upper center</option>
+                      <option value="50% 75%">Lower center</option>
                     </select>
                   </div>
                   <div className="flex items-center gap-2 mt-1">
