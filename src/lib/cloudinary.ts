@@ -1,17 +1,17 @@
+import { v2 as cloudinary } from 'cloudinary'
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+})
+
 export async function uploadToCloudinaryServer(
   fileBuffer: Buffer,
   filename: string
 ): Promise<string> {
-  const cloudinary = await import('cloudinary')
-  
-  cloudinary.v2.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  })
-
   return new Promise((resolve, reject) => {
-    cloudinary.v2.uploader
+    cloudinary.uploader
       .upload_stream(
         {
           folder: 'bonsaibri/products',
