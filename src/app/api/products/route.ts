@@ -45,8 +45,8 @@ export async function GET() {
         ...product,
         images: product.images.map(image => ({
           ...image,
-          // Ensure image URLs are absolute paths for Vercel
-          url: image.url.startsWith('/') ? image.url : '/' + image.url
+          // Only prepend / for relative paths, not full URLs (e.g. Cloudinary)
+          url: image.url.startsWith('http') || image.url.startsWith('/') ? image.url : '/' + image.url
         }))
       }))
       
@@ -58,8 +58,8 @@ export async function GET() {
       ...product,
       images: product.images.map(image => ({
         ...image,
-        // Ensure image URLs are absolute paths for Vercel
-        url: image.url.startsWith('/') ? image.url : '/' + image.url
+        // Only prepend / for relative paths, not full URLs (e.g. Cloudinary)
+        url: image.url.startsWith('http') || image.url.startsWith('/') ? image.url : '/' + image.url
       }))
     }))
     
