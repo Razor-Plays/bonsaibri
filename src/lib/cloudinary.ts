@@ -18,7 +18,7 @@ export async function uploadToCloudinaryServer(
           public_id: filename.replace(/\.[^/.]+$/, ''),
           overwrite: true,
           transformation: [
-            { width: 1200, height: 1200, crop: 'fill', gravity: 'auto' },
+            { width: 1500, height: 1500, crop: 'limit' },
             { quality: 'auto', fetch_format: 'auto' },
           ],
         },
