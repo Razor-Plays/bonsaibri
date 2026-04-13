@@ -1,14 +1,6 @@
 {
-  "buildCommand": "npm run build",
+  "buildCommand": "npx prisma generate && npx prisma migrate deploy && next build",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "regions": ["iad1"],
-  "functions": {
-    "app/api/**/*.ts": {
-      "maxDuration": 30
-    }
-  },
-  "env": {
-    "DATABASE_URL": "file:./dev.db"
-  }
+  "regions": ["syd1"]
 }
