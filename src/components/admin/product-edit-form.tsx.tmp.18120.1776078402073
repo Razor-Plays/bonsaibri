@@ -328,68 +328,8 @@ export function ProductEditForm({ product, onSave, onCancel }: ProductEditFormPr
         )}
       </div>
 
-      {/* Existing Images Management */}
-      {product.images && product.images.length > 0 && (
-        <div className="space-y-3">
-          <Label>Existing Images</Label>
-          <div className="space-y-3">
-            {product.images.map((image: { id: string; url: string; alt?: string; order: number; position?: string }) => (
-              <div
-                key={image.id}
-                className="flex items-start gap-4 p-3 border border-gray-200 dark:border-gray-700 rounded-md bg-gray-50 dark:bg-gray-800"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={image.url}
-                  alt={image.alt || 'Product image'}
-                  className="w-20 h-20 object-cover rounded flex-shrink-0"
-                />
-                <div className="flex flex-col gap-2 flex-1 min-w-0">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    Current position: <span className="font-medium">{imagePositions[image.id] || 'center'}</span>
-                  </p>
-                  <div>
-                    <Label htmlFor={`pos-${image.id}`} className="text-xs">Focus Position</Label>
-                    <select
-                      id={`pos-${image.id}`}
-                      value={imagePositions[image.id] || 'center'}
-                      onChange={(e) =>
-                        setImagePositions((prev) => ({ ...prev, [image.id]: e.target.value }))
-                      }
-                      className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 py-1.5 text-sm text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-                    >
-                      <option value="center">Center</option>
-                      <option value="top">Top</option>
-                      <option value="bottom">Bottom</option>
-                      <option value="left">Left</option>
-                      <option value="right">Right</option>
-                      <option value="50% 25%">Upper Center</option>
-                      <option value="50% 75%">Lower Center</option>
-                    </select>
-                  </div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <input
-                      type="checkbox"
-                      id={`del-${image.id}`}
-                      checked={!!imageDeleteFlags[image.id]}
-                      onChange={(e) =>
-                        setImageDeleteFlags((prev) => ({ ...prev, [image.id]: e.target.checked }))
-                      }
-                      className="h-4 w-4 rounded border-gray-300 text-red-600 focus:ring-red-500"
-                    />
-                    <Label htmlFor={`del-${image.id}`} className="text-xs text-red-600 dark:text-red-400 cursor-pointer">
-                      Remove this image
-                    </Label>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       <div>
-        <Label htmlFor="images">Add New Product Images</Label>
+        <Label htmlFor="images">Product Images</Label>
         <Input
           id="images"
           type="file"

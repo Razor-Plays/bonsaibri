@@ -90,7 +90,6 @@ export function ProductModal({ product, isOpen, onClose }: ProductModalProps) {
                       alt={image.alt || `Product image ${index + 1}`}
                       fill
                       className="object-cover"
-                      style={{ objectPosition: image.position || 'center' }}
                     />
                   </button>
                 ))}
