@@ -14,7 +14,7 @@ export default function ContactPage() {
               Get in Touch
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Have questions about our products or want to discuss a custom piece? We'd love to hear from you.
+              Have questions about my products or want to discuss a custom piece? I'd love to hear from you!
             </p>
           </div>
         </div>
