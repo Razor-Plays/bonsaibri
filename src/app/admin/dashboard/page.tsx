@@ -14,6 +14,7 @@ import { BlogList } from '@/components/admin/blog-list'
 export default function AdminDashboardPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [productRefreshKey, setProductRefreshKey] = useState(0)
   const router = useRouter()
 
   useEffect(() => {
@@ -82,7 +83,7 @@ export default function AdminDashboardPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ProductUploadForm />
+                <ProductUploadForm onSuccess={() => setProductRefreshKey(k => k + 1)} />
               </CardContent>
             </Card>
 
@@ -95,7 +96,7 @@ export default function AdminDashboardPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <ProductList />
+                <ProductList key={productRefreshKey} />
               </CardContent>
             </Card>
           </TabsContent>
